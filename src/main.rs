@@ -1,3 +1,6 @@
+// todo: refactor sonar sensor to take reference to pins.
+// todo: add more sensors and respective examples.
+
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
@@ -6,13 +9,7 @@ mod hardware;
 mod tools;
 mod examples;
 
-// todo: get library to build and switch to using it. Remove examples, hardware, and tools from this project.
-// todo: refactor sonar sensor to take reference to pins.
-
-//extern crate embedded_rs_lib_arduino;
-//use embedded_rs_lib_arduino::hardware::sensors::sonar::SonarSensor;
-use hardware::sensors::echo_module::SonarSensor;
-
+use hardware::sensors::sonar::SonarSensor;
 use arduino_hal::prelude::*;
 use embedded_hal::blocking::delay::DelayUs;
 
