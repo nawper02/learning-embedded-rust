@@ -1,10 +1,10 @@
+/*
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
 
 mod hardware;
 mod tools;
-mod examples;
 
 //extern crate embedded_rs_lib_arduino;
 //use embedded_rs_lib_arduino::hardware::sensors::sonar::SonarSensor;
@@ -44,3 +44,4 @@ fn main() -> ! {
         arduino_hal::delay_ms(16);
     }
 }
+*/
