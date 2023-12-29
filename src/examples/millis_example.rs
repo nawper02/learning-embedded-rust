@@ -1,6 +1,6 @@
-// todo: add more sensors and respective examples.
+/*
 // Example usage of millis.
-// Note that millis is hardcoded to use TC0. Allowing for general timers would be a mess.
+// Note that millis is hardcoded to use TC0. Doing it generally would be too hard...
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
@@ -31,3 +31,5 @@ fn main() -> ! {
         ufmt::uwriteln!(&mut serial, "Elapsed millis: {}", time).void_unwrap();
     }
 }
+
+*/

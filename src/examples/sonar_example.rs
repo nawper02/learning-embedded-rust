@@ -1,15 +1,18 @@
 /*
+// Example usage of the HC-SR04 sonar sensor module.
+// Generalized to take any timer.
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
 
 mod hardware;
 mod tools;
+mod examples;
 
 use hardware::sensors::sonar::SonarSensor;
-
 use arduino_hal::prelude::*;
 use embedded_hal::blocking::delay::DelayUs;
+use crate::hardware::peripheral_abstraction::timer::{Timer};
 
 #[arduino_hal::entry]
 fn main() -> ! {
@@ -17,11 +20,9 @@ fn main() -> ! {
     let mut pins = arduino_hal::pins!(dp);
     let mut serial = arduino_hal::default_serial!(dp, pins, 57600);
 
-    // Initialize TC1 for the SonarSensor
+    // Use TC1 for the SonarSensor
+    // No need to prescale since it is done inside SonarSensor
     let timer = dp.TC1;
-
-    // Prescale TC1
-    timer.tccr1b.write(|w| w.cs1().prescale_64());
 
     // Define Trigger and Echo pins
     let trigger_pin = pins.d53.into_output().downgrade();

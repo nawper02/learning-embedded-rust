@@ -11,9 +11,6 @@
 
 use arduino_hal::prelude::*;
 use core::cell;
-use panic_halt as _;
-
-use embedded_hal::serial::Read;
 
 // Possible Values:
 //
@@ -63,6 +60,6 @@ unsafe fn TIMER0_COMPA() {
     })
 }
 
-pub(crate) fn millis() -> u32 {
+pub fn millis() -> u32 {
     avr_device::interrupt::free(|cs| MILLIS_COUNTER.borrow(cs).get())
 }

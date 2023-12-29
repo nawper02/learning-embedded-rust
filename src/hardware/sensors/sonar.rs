@@ -33,7 +33,7 @@ impl<T: Timer> SonarSensor<T> {
         while self.echo.is_low() {
             if self.timer.read() >= 65000 { // Adjust this value based on your timer's resolution and timeout requirement
                 // Stop the timer if it takes too long, assume no response (target too far)
-                self.timer.stop();
+                self.timer.postscale();
                 return 63500; // Return a specific value indicating out of range
             }
         }
@@ -45,7 +45,7 @@ impl<T: Timer> SonarSensor<T> {
         while self.echo.is_high() {}
 
         // Stop the timer
-        self.timer.stop();
+        self.timer.postscale();
 
         // Calculate and return the distance
         // The formula for distance will depend on the speed of sound and the timer's resolution
