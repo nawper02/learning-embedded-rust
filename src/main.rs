@@ -1,33 +1,19 @@
-// todo: add more sensors and respective examples.
-// Example usage of millis.
-// Note that millis is hardcoded to use TC0. Allowing for general timers would be a mess.
+// blink.
+// added to examples as a quick default program to flash.
 #![no_std]
 #![no_main]
-#![feature(abi_avr_interrupt)]
 
-mod tools;
-
-use arduino_hal::prelude::*;
-use embedded_hal::blocking::delay::DelayMs;
-use tools::millis::millis::{millis, millis_init};
+use panic_halt as _;
 
 #[arduino_hal::entry]
 fn main() -> ! {
     let dp = arduino_hal::Peripherals::take().unwrap();
-    let mut pins = arduino_hal::pins!(dp);
-    let mut serial = arduino_hal::default_serial!(dp, pins, 57600);
+    let pins = arduino_hal::pins!(dp);
 
-    // initialize millis
-    millis_init(dp.TC0);
-
-    // Enable interrupts globally
-    unsafe { avr_device::interrupt::enable() };
+    let mut led = pins.d13.into_output().downgrade();
 
     loop {
-        // Get the current milliseconds using the `millis` function
-        let time = millis();
-
-        // Print the elapsed milliseconds
-        ufmt::uwriteln!(&mut serial, "Elapsed millis: {}", time).void_unwrap();
+        led.toggle();
+        arduino_hal::delay_ms(1000);
     }
 }
