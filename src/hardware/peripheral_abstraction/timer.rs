@@ -28,8 +28,8 @@ impl Timer for TC0 {
         });
     }
 
-    fn read(&self) -> u8 {
-        self.tcnt0.read().bits()
+    fn read(&self) -> u16 {
+        self.tcnt0.read().bits() as u16
     }
 
     fn reset(&self) {
