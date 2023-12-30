@@ -29,6 +29,8 @@ impl Timer for TC0 {
     }
 
     fn read(&self) -> u16 {
+        // it seems the timers have different resolutions.
+        // to satisfy the timer traits expected u16 type for the read() method we must safe cast it here.
         self.tcnt0.read().bits() as u16
     }
 
