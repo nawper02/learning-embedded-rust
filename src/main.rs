@@ -7,7 +7,7 @@ use arduino_hal::hal::port::PinOps;
 use arduino_hal::simple_pwm::PwmPinOps;
 
 mod hardware;
-use hardware::motors::dc::DcMotor;
+use hardware::motors::dc::{DcMotor, MotorDirection};
 
 #[arduino_hal::entry]
 fn main() -> ! {
@@ -29,10 +29,10 @@ fn main() -> ! {
 
     // Set speed and direction.
     motor.set_speed(200);
-    motor.set_direction(true); // true for forward
+    motor.set_direction(MotorDirection::Forward);
     arduino_hal::delay_ms(1000);
 
-    motor.set_direction(false); // false for backward
+    motor.set_direction(MotorDirection::Backward);
     arduino_hal::delay_ms(1000);
 
     // Vary speed.
