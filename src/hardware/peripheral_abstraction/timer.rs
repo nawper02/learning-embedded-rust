@@ -1,3 +1,30 @@
+/*!
+ * Timer Abstraction for ATMega2560
+ * =================================
+ *
+ * This module provides a `Timer` trait to abstract the functionality of timers
+ * in the ATMega2560 microcontroller, offering a uniform interface for various timer types.
+ *
+ * Features:
+ * - The `Timer` trait defines common operations such as `prescale`, `read`, `reset`, and `postscale`.
+ * - `prescale` configures the timer's prescaler to determine its counting speed.
+ * - `read` returns the current timer value as a `u16`, accommodating different timer resolutions.
+ * - `reset` zeroes the timer count.
+ * - `postscale` stops the timer by removing its clock source.
+ *
+ * Implementations:
+ * - The trait is implemented for `TC0` and `TC1`, representative of 8-bit and 16-bit timers respectively.
+ * - Each implementation tailors the trait methods to the specific characteristics of the timer.
+ *
+ * Usage:
+ * - The `Prescaler` enum provides prescaling options to control timer speed.
+ *
+ * Design Consideration:
+ * - While implementing the `Timer` trait for each timer involves some boilerplate, it significantly
+ *   cleans up and simplifies timer operations elsewhere in the code.
+ * - This abstraction leverages Rust's trait system to ensure type safety and consistency across different timer types.
+ */
+
 use avr_device::atmega2560::{TC0, TC1};
 
 pub trait Timer {

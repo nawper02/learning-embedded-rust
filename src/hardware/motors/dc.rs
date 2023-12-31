@@ -1,3 +1,36 @@
+/*!
+ * DC Motor Abstraction for Arduino
+ * ================================
+ *
+ * This module provides a `DcMotor` struct, an abstraction for controlling DC motors
+ * using Arduino hardware through the `arduino-hal` crate.
+ *
+ * Features:
+ * - The `DcMotor` struct represents a DC motor and allows control over its speed and direction.
+ * - Speed control is achieved through PWM (Pulse Width Modulation) on the `en` (enable) pin.
+ * - Direction control is managed by setting `in_a` and `in_b` pins high or low.
+ *
+ * Usage:
+ * - The `new` method initializes the motor with specified pins for PWM output and direction control.
+ * - `set_speed` adjusts the motor's speed by setting the PWM duty cycle.
+ * - `set_direction` changes the motor's rotation direction to either forward or backward.
+ * - `turn_on` and `turn_off` methods control the motor's operational state.
+ *
+ * Parameters:
+ * - `TC`: Type associated with the PWM timer.
+ * - `E`: PwmPinOps trait, indicating the pin supports PWM operations.
+ * - `P1`, `P2`: PinOps trait, indicating the pins support basic I/O operations.
+ *
+ * Design Consideration:
+ * - This abstraction is designed to simplify the control of DC motors by providing a high-level interface.
+ * - It encapsulates the lower-level details of pin manipulation, making the motor control code more readable
+ *   and easier to maintain.
+ *
+ * Note:
+ * - The `MotorDirection` enum defines the two possible rotation directions: Forward and Backward.
+ * - This abstraction is tailored for use with the Arduino ecosystem, specifically with the `arduino-hal` crate.
+ */
+
 use arduino_hal::port::{Pin, mode, PinOps};
 use arduino_hal::simple_pwm::PwmPinOps;
 

@@ -1,3 +1,20 @@
+/*
+ * Interrupt Handling Abstraction Example for ATMega2560
+ * =============================================
+ *
+ * This script showcases an abstraction for handling interrupts on the ATMega2560
+ * chip using Rust. The abstraction, implemented through the `InterruptController`
+ * struct, simplifies the configuration and management of interrupts in a safe and
+ * modular way.
+ *
+ * Why Abstraction:
+ * - Enhances code readability and maintainability by replacing direct register
+ *   manipulation with clear, high-level methods.
+ * - Promotes safer handling of hardware resources by leveraging Rust's type system.
+ * - Facilitates code reuse and scalability for handling multiple types of interrupts.
+ */
+
+/*
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
@@ -58,3 +75,4 @@ fn INT1() {
         BLINK_FAST.borrow(cs).set(!current_state);
     });
 }
+*/
