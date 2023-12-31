@@ -122,6 +122,8 @@
     USART3_TX,
  */
 
+/* Start of code
+
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
@@ -191,3 +193,4 @@ fn INT1() {
         BLINK_FAST.borrow(cs).set(!current_state);
     });
 }
+*/
