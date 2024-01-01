@@ -1,15 +1,15 @@
-/* ROUGH SERVO EXAMPLE. BARELY WORKS
+/*
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
 
 use panic_halt as _;
-
 use arduino_hal::simple_pwm::*;
 
 mod tools;
-use tools::embedded_calculations::calculate_duty_for_pulse_width;
 
+mod hardware;
+use hardware::motors::servo::ServoMotor;
 
 #[arduino_hal::entry]
 fn main() -> ! {
@@ -17,24 +17,24 @@ fn main() -> ! {
     let pins = arduino_hal::pins!(dp);
 
     // PWM timer.
-    // I believe timer3 is connected to digital pin 2 in the atmega2560.
+    // We are prescaling to 1024 to get a frequecy of 61 hz, which is close to the servos
+    // 50hz. Because of this, the angle_to_pulse_width method in ServoMotor uses some magic numbers
+    // that do not directly correspond to the pulse widths that the servo expects.
     let timer3 = Timer3Pwm::new(dp.TC3, Prescaler::Prescale1024);
 
-    // PWM pin. Controls the position of the motor.
-    let mut servo_pin = pins.d2.into_output().into_pwm(&timer3);
+    // Servo PWM pin
+    let servo_pwm_pin = pins.d2.into_output().into_pwm(&timer3);
 
-    // Enable PWM pin.
-    servo_pin.enable();
+    // Initialize the servo motor with the appropriate pin.
+    let mut servo = ServoMotor::new(servo_pwm_pin);
 
     loop {
-        servo_pin.set_duty(calculate_duty_for_pulse_width(0.4)); // Approximately 0°
+        servo.set_position(0.0); // Approximately 0°
         arduino_hal::delay_ms(1000);
 
-
-        servo_pin.set_duty(calculate_duty_for_pulse_width(3.2)); // Approximately 180°
+        servo.set_position(180.0); // Approximately 180°
         arduino_hal::delay_ms(1000);
     }
-
 }
 
- */
+*/
