@@ -51,7 +51,6 @@ use avr_device::atmega2560::EXINT;
 
 pub struct InterruptController<'a> {
     exint: &'a mut EXINT,
-    // Other fields as needed
 }
 
 impl<'a> InterruptController<'a> {
@@ -62,11 +61,9 @@ impl<'a> InterruptController<'a> {
     pub fn configure_interrupt(&mut self, int: ExternalInterrupt, mode: InterruptMode) {
         match int {
             ExternalInterrupt::INT0 => {
-                // Configure INT0
                 self.exint.eicra.modify(|_, w| w.isc0().bits(mode as u8));
             },
             ExternalInterrupt::INT1 => {
-                // Configure INT1
                 self.exint.eicra.modify(|_, w| w.isc1().bits(mode as u8));
             },
             ExternalInterrupt::INT2 => {
@@ -115,7 +112,6 @@ impl<'a> InterruptController<'a> {
         };
         self.exint.pcicr.modify(|_, w| w.pcie().bits(mask) );
     }
-
 }
 
 pub enum ExternalInterrupt {
