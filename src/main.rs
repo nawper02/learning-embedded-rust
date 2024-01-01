@@ -5,6 +5,10 @@ use panic_halt as _;
 
 use arduino_hal::simple_pwm::*;
 
+mod tools;
+use tools::embedded_calculations::calculate_duty_for_pulse_width;
+
+
 #[arduino_hal::entry]
 fn main() -> ! {
     let dp = arduino_hal::Peripherals::take().unwrap();
@@ -29,19 +33,4 @@ fn main() -> ! {
         arduino_hal::delay_ms(1000);
     }
 
-}
-
-// Calculate the duty cycle for a given pulse width in milliseconds.
-fn calculate_duty_for_pulse_width(pulse_width_ms: f32) -> u8 {
-    // Total period for 61 Hz PWM frequency (1024 prescaler) in milliseconds.
-    let total_period_ms: f32 = 20.0;
-
-    // Maximum duty value for an 8-bit value.
-    let max_duty: u8 = 255;
-
-    // Calculate the fraction of the period that the pulse width represents.
-    let duty_fraction: f32 = pulse_width_ms / total_period_ms;
-
-    // Convert this fraction to a duty cycle value.
-    (duty_fraction * max_duty as f32) as u8
 }
