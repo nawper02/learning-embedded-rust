@@ -56,17 +56,17 @@ fn main() -> ! {
     let mut previous_millis = millis();
 
     loop {
-        let current_millis = millis();
-
         avr_device::interrupt::free(|cs| {
             local_blink_fast = BLINK_FAST.borrow(cs).get();
         });
 
+        let current_millis = millis();
+
         let interval = if local_blink_fast { 100 } else { 1000 };
 
-        execute_after_delay!(current_millis, previous_millis, interval, {
-            led.toggle();
-        });
+        let mut action = || { led.toggle() };
+
+        execute_after_delay!(current_millis, previous_millis, interval, action);
 
     }
 }
