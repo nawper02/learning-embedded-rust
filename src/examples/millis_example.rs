@@ -9,7 +9,7 @@ mod tools;
 
 use arduino_hal::prelude::*;
 use embedded_hal::blocking::delay::DelayMs;
-use tools::millis::millis::{millis, millis_init};
+use tools::millis::{millis, millis_init};
 
 #[arduino_hal::entry]
 fn main() -> ! {

@@ -134,7 +134,7 @@ use avr_device::interrupt::Mutex;
 use core::cell::Cell;
 
 mod tools;
-use tools::millis::millis::{millis, millis_init};
+use tools::millis::{millis, millis_init};
 
 static BLINK_FAST: Mutex<Cell<bool>> = Mutex::new(Cell::new(false));
 

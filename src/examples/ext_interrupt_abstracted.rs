@@ -26,7 +26,7 @@ use core::cell::Cell;
 
 mod tools;
 mod hardware;
-use tools::millis::millis::{millis, millis_init};
+use tools::millis::{millis, millis_init};
 use hardware::peripheral_abstraction::interrupts::{InterruptController, ExternalInterrupt, InterruptMode};
 
 static BLINK_FAST: Mutex<Cell<bool>> = Mutex::new(Cell::new(false));
