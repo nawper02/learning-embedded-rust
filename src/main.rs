@@ -16,6 +16,9 @@ fn main() -> ! {
     let pins = arduino_hal::pins!(dp);
 
     // PWM timer.
+    // We are prescaling to 1024 to get a frequecy of 61 hz, which is close to the servos
+    // 50hz. Because of this, the angle_to_pulse_width method in ServoMotor uses some magic numbers
+    // that do not directly correspond to the pulse widths that the servo expects.
     let timer3 = Timer3Pwm::new(dp.TC3, Prescaler::Prescale1024);
 
     // Servo PWM pin

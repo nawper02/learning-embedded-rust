@@ -25,7 +25,7 @@ impl<TC, E> ServoMotor<TC, E>
     fn angle_to_pulse_width(&self, angle: f32) -> f32 {
         // Convert the angle to a pulse width.
         // Adjust this formula according to your servo's specifications.
-        0.5 + (angle / 180.0) * 2.0
+        0.5 + (angle / 180.0) * 2.7
     }
 
     fn calculate_duty_for_pulse_width(pulse_width_ms: f32) -> u8 {
