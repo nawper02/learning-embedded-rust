@@ -48,7 +48,7 @@
  * other tasks to run concurrently without being interrupted by delay or sleep functions.
  */
 #[macro_export]
-macro_rules! execute_after_delay {
+macro_rules! delayed_execute_nb {
     ($current_millis:expr, $previous_millis:expr, $interval:expr, $action:expr) => {
         if $current_millis.wrapping_sub($previous_millis) >= $interval {
             $previous_millis = $current_millis;

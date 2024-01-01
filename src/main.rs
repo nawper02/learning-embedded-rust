@@ -1,61 +1,45 @@
+// direct motor control example.
 #![no_std]
 #![no_main]
 #![feature(abi_avr_interrupt)]
 
 use panic_halt as _;
-use arduino_hal::prelude::*;
-use avr_device::interrupt::Mutex;
-use core::cell::Cell;
 
+use arduino_hal::simple_pwm::*;
 mod tools;
 mod hardware;
-use tools::millis::{millis, millis_init};
-use hardware::peripheral_abstraction::interrupts::{InterruptController, ExternalInterrupt, InterruptMode};
-
-static BLINK_FAST: Mutex<Cell<bool>> = Mutex::new(Cell::new(false));
+use tools::embedded_calculations::{calculate_duty_for_pulse_width, calculate_timer_count_for_pwm_frequency};
 
 #[arduino_hal::entry]
 fn main() -> ! {
-    let mut dp = arduino_hal::Peripherals::take().unwrap();
+    let dp = arduino_hal::Peripherals::take().unwrap();
     let pins = arduino_hal::pins!(dp);
 
-    millis_init(dp.TC0);
+    // Configure TC3.
+    let clock_freq = 16_000_000; // 16 MHz for Arduino boards
+    let pwm_freq = 50; // 50 Hz for servo control
+    let timer_count = calculate_timer_count_for_pwm_frequency(clock_freq, pwm_freq, Prescaler::Prescale64);
 
-    // Set up the LED and button
-    let mut led = pins.d13.into_output();
-    let _button = pins.d2.into_pull_up_input();
+    // Set timer count
+    dp.TC3.icr3.write(|w| w.bits(timer_count));
 
-    // Using the interrupt abstraction
-    let mut int_controller = InterruptController::new(&mut dp.EXINT);
-    int_controller.configure_interrupt(ExternalInterrupt::INT1, InterruptMode::FallingEdge);
-    int_controller.enable_interrupt(ExternalInterrupt::INT1);
+    // PWM timer.
+    // I believe timer3 is connected to digital pin 2 in the atmega2560.
+    let timer3 = Timer3Pwm::new(dp.TC3, Prescaler::Prescale64);
 
-    // Enable external interrupt for the button
-    unsafe { avr_device::interrupt::enable() };
+    // PWM pin. Controls the position of the motor.
+    let mut servo_pin = pins.d2.into_output().into_pwm(&timer3);
 
-    let mut local_blink_fast = false;
-    let mut previous_millis = millis();
+    // Enable PWM pin.
+    servo_pin.enable();
 
     loop {
-        avr_device::interrupt::free(|cs| {
-            local_blink_fast = BLINK_FAST.borrow(cs).get();
-        });
+        servo_pin.set_duty(calculate_duty_for_pulse_width(1.0)); // Approximately 0°
+        arduino_hal::delay_ms(1000);
 
-        let current_millis = millis();
 
-        let interval = if local_blink_fast { 100 } else { 1000 };
-
-        let mut action = || { led.toggle() };
-
-        execute_after_delay!(current_millis, previous_millis, interval, action);
-
+        servo_pin.set_duty(calculate_duty_for_pulse_width(2.0)); // Approximately 180°
+        arduino_hal::delay_ms(1000);
     }
-}
 
-#[avr_device::interrupt(atmega2560)]
-fn INT1() {
-    avr_device::interrupt::free(|cs| {
-        let current_state = BLINK_FAST.borrow(cs).get();
-        BLINK_FAST.borrow(cs).set(!current_state);
-    });
 }
