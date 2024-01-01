@@ -1,6 +1,7 @@
 /* ROUGH SERVO EXAMPLE. BARELY WORKS
 #![no_std]
 #![no_main]
+#![feature(abi_avr_interrupt)]
 
 use panic_halt as _;
 
