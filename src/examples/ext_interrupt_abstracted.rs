@@ -7,6 +7,8 @@
  * struct, simplifies the configuration and management of interrupts in a safe and
  * modular way.
  *
+ * This script also uses a macro to avoid boilerplate involved with non-blocking delays.
+ *
  * Why Abstraction:
  * - Enhances code readability and maintainability by replacing direct register
  *   manipulation with clear, high-level methods.
@@ -55,16 +57,17 @@ fn main() -> ! {
 
     loop {
         let current_millis = millis();
+
         avr_device::interrupt::free(|cs| {
             local_blink_fast = BLINK_FAST.borrow(cs).get();
         });
 
         let interval = if local_blink_fast { 100 } else { 1000 };
 
-        if current_millis.wrapping_sub(previous_millis) >= interval {
-            previous_millis = current_millis;
+        execute_after_delay!(current_millis, previous_millis, interval, {
             led.toggle();
-        }
+        });
+
     }
 }
 
