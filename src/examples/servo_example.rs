@@ -1,5 +1,4 @@
 /* ROUGH SERVO EXAMPLE. BARELY WORKS
-// direct motor control example.
 #![no_std]
 #![no_main]
 
@@ -35,7 +34,7 @@ fn main() -> ! {
 
 // Calculate the duty cycle for a given pulse width in milliseconds.
 fn calculate_duty_for_pulse_width(pulse_width_ms: f32) -> u8 {
-    // Total period for 50 Hz PWM frequency in milliseconds.
+    // Total period for 61 Hz PWM frequency (1024 prescaler) in milliseconds.
     let total_period_ms: f32 = 20.0;
 
     // Maximum duty value for an 8-bit value.
