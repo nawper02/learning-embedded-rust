@@ -1,2 +1,2 @@
-pub(crate) mod dc;
-mod servo;
+pub mod dc;
+pub mod servo;
