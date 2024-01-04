@@ -1,4 +1,5 @@
 /*
+/*
   Example Usage of IRSensorArray for Arduino
   -------------------------------------------
   This example demonstrates the usage of the IRSensorArray for both digital and analog sensor modes on an Arduino board.
@@ -97,3 +98,4 @@ fn main() -> ! {
         arduino_hal::delay_ms(50); // Delay to prevent flooding the serial output
     }
 }
+*/
